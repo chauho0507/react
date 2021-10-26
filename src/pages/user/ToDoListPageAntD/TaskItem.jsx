@@ -1,8 +1,7 @@
 import React, { useState, useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import { deleteTaskAction } from '../../../redux/actions';
-import { editTaskAction } from '../../../redux/actions';
+import { deleteTaskAction, editTaskAction } from '../../../redux/actions';
 
 import { Card, Button, Row, Form, Input } from 'antd';
 
@@ -23,7 +22,7 @@ const TaskItem = ({ data, index }) => {
   const renderItemView = useMemo(() => {
     return (
       <>
-        <div>Tiêu đề: {data.title}</div>
+        <h3>Tiêu đề: {data.title}</h3>
         <div>Nội dung: {data.description}</div>
       </>
     );

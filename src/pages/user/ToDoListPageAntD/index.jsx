@@ -1,11 +1,10 @@
 import React, { useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addTaskAction } from '../../../redux/actions';
+
+import { addTaskAction, getTaskListAction } from '../../../redux/actions';
+
 import TaskItem from './TaskItem';
-
-import { getTaskListAction } from '../../../redux/actions';
 import { TO_DO_LIST } from '../../../api/toDoList';
-
 import { Form, Button, Input, Card, Row } from 'antd';
 
 const ToDoListPageAntD = () => {

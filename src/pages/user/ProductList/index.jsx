@@ -42,7 +42,7 @@ const ProductListPage = () => {
         <img src={item.image} className="image" alt="" />
         <div className="card-content">
           <div>{item.name}</div>
-          <div>{item.price.toLocaleString()}</div>
+          <div>{`${item.price.toLocaleString()} ₫`}</div>
         </div>
       </div>
     ));
