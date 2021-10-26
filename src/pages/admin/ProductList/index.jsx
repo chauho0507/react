@@ -14,6 +14,7 @@ import {
   InputNumber,
   Checkbox,
 } from 'antd';
+import { CheckOutlined } from '@ant-design/icons';
 import { v4 as uuidv4 } from 'uuid';
 
 // import { PRODUCT_LIST } from '../../../api/product';
@@ -93,6 +94,7 @@ const AdminProductListPage = () => {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
+      width: '40%',
       render: (_, record) => {
         return (
           <Space size={16}>
@@ -103,14 +105,25 @@ const AdminProductListPage = () => {
       },
     },
     {
+      title: 'New',
+      dataIndex: 'isNew',
+      key: 'isNew',
+      width: '8%',
+      render: (_, record) => {
+        return <Space size={16}>{record.isNew ? <CheckOutlined /> : ''}</Space>;
+      },
+    },
+    {
       title: 'Price',
       dataIndex: 'price',
       key: 'price',
+      width: '10%',
       render: item => `${item.toLocaleString()} ₫`,
     },
     {
       title: 'Action',
       key: 'action',
+      width: '25%',
       render: (_, record) => (
         <Space size="middle">
           <Button
@@ -174,7 +187,7 @@ const AdminProductListPage = () => {
           </Button>
         </Space>
       </Row>
-      <Table columns={tableColumns} dataSource={tableData} />
+      <Table size="small" columns={tableColumns} dataSource={tableData} />
       <Drawer
         title={
           isShowModifyProduct === 'update' ? 'Sửa sản phẩm' : 'Thêm sản phẩm'
