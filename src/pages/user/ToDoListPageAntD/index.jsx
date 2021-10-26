@@ -1,17 +1,25 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addTaskAction } from '../../redux/actions/toDoList.action';
+import { addTaskAction } from '../../../redux/actions';
 import TaskItem from './TaskItem';
 
-import { Form, Button, Input, Card } from 'antd';
+import { getTaskListAction } from '../../../redux/actions';
+import { TO_DO_LIST } from '../../../api/toDoList';
 
-const ToDoListPage = () => {
+import { Form, Button, Input, Card, Row } from 'antd';
+
+const ToDoListPageAntD = () => {
+  useEffect(() => {
+    dispatch(getTaskListAction(TO_DO_LIST));
+  }, []);
+
+  const [toDoListForm] = Form.useForm();
   const { taskList } = useSelector(state => state.toDoListReducer);
   const dispatch = useDispatch();
 
   const handleAddTask = values => {
-    const newTaskList = [values, ...taskList];
-    dispatch(addTaskAction(newTaskList));
+    dispatch(addTaskAction(values));
+    toDoListForm.resetFields();
   };
 
   const renderTaskItem = useMemo(() => {
@@ -22,11 +30,13 @@ const ToDoListPage = () => {
 
   return (
     <div>
-      <Card title="To Do List">
+      <Card title="To Do List" style={{ maxWidth: 700, width: '100%' }}>
         <Form
+          form={toDoListForm}
           name="addTask"
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 16 }}
+          initialValues={{ username: 'Tuấn' }}
           onFinish={values => handleAddTask(values)}
         >
           <Form.Item
@@ -56,10 +66,11 @@ const ToDoListPage = () => {
           >
             <Input />
           </Form.Item>
-
-          <Button type="primary" htmlType="submit">
-            Thêm Task
-          </Button>
+          <Row justify="center">
+            <Button type="primary" htmlType="submit">
+              Thêm Task
+            </Button>
+          </Row>
         </Form>
       </Card>
       {renderTaskItem}
@@ -67,4 +78,4 @@ const ToDoListPage = () => {
   );
 };
 
-export default ToDoListPage;
+export default ToDoListPageAntD;

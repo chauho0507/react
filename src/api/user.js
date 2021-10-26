@@ -20,4 +20,11 @@ export const USER_LIST = [
     password: '123123',
     role: 'admin',
   },
+  {
+    id: 4,
+    name: 'Châu',
+    email: 'chaumapuser@gmail.com',
+    password: '123123',
+    role: 'user',
+  },
 ];

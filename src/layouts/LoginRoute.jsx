@@ -1,20 +1,17 @@
-import React from "react";
-import { Route, Redirect } from "react-router-dom";
+import React from 'react';
+import { Route, Redirect } from 'react-router-dom';
 
-import { ROUTER } from '../constants/router'
+import { ROUTER } from '../constants/router';
 
-const LoginRoute = ({
-  component: Component,
-  ...props
-}) => {
-  const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+const LoginRoute = ({ component: Component, ...props }) => {
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
   if (userInfo) {
-    return <Redirect to={ROUTER.HOME} />
+    return <Redirect to={ROUTER.USER.HOME} />;
   }
   return (
     <Route
       {...props}
-      render={(routeProps) => (
+      render={routeProps => (
         <>
           <Component {...routeProps} />
         </>

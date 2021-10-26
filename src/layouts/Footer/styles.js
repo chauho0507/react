@@ -5,5 +5,6 @@ export const Footer = styled.div`
   justify-content: center;
   align-items: center;
   height: 64px;
-  background-color: ${props => props.theme.header};
+  background-color: ${props => props.theme.footer};
+  color: white;
 `;

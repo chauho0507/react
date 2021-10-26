@@ -1,84 +1,92 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import 'antd/dist/antd.css';
 
 import DefaultRoute from './layouts/DefaultRoute';
 import AdminRoute from './layouts/AdminRoute';
 import LoginRoute from './layouts/LoginRoute';
 
-import HomePage from './pages/Home';
-import ProductListPage from './pages/ProductList';
-import ProductDetailPage from './pages/ProductDetail';
-import DashboardPage from './pages/Dashboard';
-import LoginAndRegisterPage from './pages/LoginAndRegister';
-import ToDoListPage from './pages/ToDoListPage';
+import HomePage from './pages/user/Home';
+import ProductListPage from './pages/user/ProductList';
+import ProductDetailPage from './pages/user/ProductDetail';
+import ToDoListAntDPage from './pages/user/ToDoListPageAntD';
+
+import AdminDashboardPage from './pages/admin/Dashboard';
+import AdminProductListPage from './pages/admin/ProductList';
+import ModifyProductPage from './pages/admin/ModifyProduct';
+import LoginAndRegisterAntDPage from './pages/LoginAndRegisterAntD';
 import NotFoundPage from './pages/NotFound';
 
-import { ROUTER } from './constants/router';
-import UsersProvider from './store/UsersProvider';
+import { getUserInfoAction, getUserListAction } from './redux/actions';
+import { USER_LIST } from './api/user';
 
+import { ROUTER } from './constants/router';
 import { darkTheme, lightTheme } from './themes';
 
-function App() {
-  const [isShowSidebar, setIsShowSidebar] = useState(true);
-  const [theme, setTheme] = useState('light');
+const App = () => {
+  const { theme } = useSelector(state => state.commonReducer);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo')) || {};
+    dispatch(getUserInfoAction(userInfo));
+    dispatch(getUserListAction(USER_LIST));
+  }, []);
 
   return (
     <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
       <BrowserRouter>
-        <select onChange={e => setTheme(e.target.value)}>
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
-        </select>
-        <UsersProvider>
-          <Switch>
-            <DefaultRoute
-              exact
-              path={ROUTER.HOME}
-              component={HomePage}
-              setIsShowSidebar={setIsShowSidebar}
-              isShowSidebar={isShowSidebar}
-            />
-            <DefaultRoute
-              exact
-              path={ROUTER.PRODUCT_LIST}
-              component={ProductListPage}
-              setIsShowSidebar={setIsShowSidebar}
-              isShowSidebar={isShowSidebar}
-            />
-            <DefaultRoute
-              exact
-              path={ROUTER.PRODUCT_DETAIL}
-              component={ProductDetailPage}
-              setIsShowSidebar={setIsShowSidebar}
-              isShowSidebar={isShowSidebar}
-            />
-            <DefaultRoute
-              exact
-              path={ROUTER.TO_DO_LIST}
-              component={ToDoListPage}
-              setIsShowSidebar={setIsShowSidebar}
-              isShowSidebar={isShowSidebar}
-            />
-            <AdminRoute
-              exact
-              path={ROUTER.DASHBOARD}
-              component={DashboardPage}
-            />
-            <LoginRoute
-              exact
-              path={ROUTER.LOGIN}
-              component={LoginAndRegisterPage}
-            />
-            <Route component={NotFoundPage} />
-          </Switch>
-        </UsersProvider>
+        <Switch>
+          <DefaultRoute exact path={ROUTER.USER.HOME} component={HomePage} />
+          <DefaultRoute
+            exact
+            path={ROUTER.USER.PRODUCT_LIST}
+            component={ProductListPage}
+          />
+          <DefaultRoute
+            exact
+            path={ROUTER.USER.PRODUCT_DETAIL}
+            component={ProductDetailPage}
+          />
+          <DefaultRoute
+            exact
+            path={ROUTER.USER.TO_DO_LIST_ANTD}
+            component={ToDoListAntDPage}
+          />
+          <AdminRoute
+            exact
+            path={ROUTER.ADMIN.DASHBOARD}
+            component={AdminDashboardPage}
+          />
+          <AdminRoute
+            exact
+            path={ROUTER.ADMIN.PRODUCT_LIST}
+            component={AdminProductListPage}
+          />
+          <AdminRoute
+            exact
+            path={ROUTER.ADMIN.UPDATE_PRODUCT}
+            component={ModifyProductPage}
+          />
+          <AdminRoute
+            exact
+            path={ROUTER.ADMIN.CREATE_PRODUCT}
+            component={ModifyProductPage}
+          />
+          <LoginRoute
+            exact
+            path={ROUTER.LOGIN}
+            component={LoginAndRegisterAntDPage}
+          />
+          <Route path={ROUTER.NOT_FOUND} component={NotFoundPage} />
+          <Route component={NotFoundPage} />
+        </Switch>
       </BrowserRouter>
     </ThemeProvider>
   );
-}
+};
 
 export default App;
