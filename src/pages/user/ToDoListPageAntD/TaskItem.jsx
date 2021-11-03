@@ -1,23 +1,10 @@
 import React, { useState, useMemo } from 'react';
-import { useDispatch } from 'react-redux';
-
-import { deleteTaskAction, editTaskAction } from '../../../redux/actions';
 
 import { Card, Button, Row, Form, Input } from 'antd';
 
-const TaskItem = ({ data, index }) => {
+const TaskItem = ({ data, handleEditTask, handleDeleteTask }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [editForm] = Form.useForm();
-
-  const dispatch = useDispatch();
-
-  const handleEditTask = (index, values) => {
-    dispatch(editTaskAction({ index, values }));
-  };
-
-  const handleDeleteTask = index => {
-    dispatch(deleteTaskAction({ index: index }));
-  };
 
   const renderItemView = useMemo(() => {
     return (
@@ -32,14 +19,17 @@ const TaskItem = ({ data, index }) => {
     return (
       <Form
         form={editForm}
-        name={`editTask-${index}`}
+        name={`editTask-${data.id}`}
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 20 }}
         initialValues={{
           title: data.title,
           description: data.description,
         }}
-        onFinish={values => handleEditTask(index, values)}
+        onFinish={values => {
+          handleEditTask({ id: data.id, ...values });
+          setIsEdit(false);
+        }}
       >
         <Form.Item
           label="Tiêu đề"
@@ -83,7 +73,6 @@ const TaskItem = ({ data, index }) => {
                 style={{ marginRight: 8 }}
                 onClick={() => {
                   editForm.submit();
-                  setIsEdit(false);
                 }}
               >
                 Xác nhận
@@ -107,7 +96,7 @@ const TaskItem = ({ data, index }) => {
               Sửa
             </Button>
           )}
-          <Button danger onClick={() => handleDeleteTask(index)}>
+          <Button danger onClick={() => handleDeleteTask(data.id)}>
             Xóa
           </Button>
         </Row>

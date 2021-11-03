@@ -1,84 +1,195 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { PRODUCT_LIST } from '../constants';
+import {
+  USER_ACTION,
+  PRODUCT_ACTION,
+  REQUEST,
+  SUCCESS,
+  FAIL,
+} from '../constants';
+
 const initialState = {
-  productList: [
-    {
-      id: '1',
-      name: 'iPhone 13',
-      price: 30000000,
-      isNew: true,
-      image: 'https://via.placeholder.com/800x600',
-    },
-    {
-      id: '2',
-      name: 'iPhone 13 Mini',
-      price: 25000000,
-      isNew: false,
-      image: 'https://via.placeholder.com/800x600',
-    },
-    {
-      id: '3',
-      name: 'iPhone 13 Pro',
-      price: 35000000,
-      isNew: true,
-      image: 'https://via.placeholder.com/800x600',
-    },
-    {
-      id: '4',
-      name: 'iPhone 13 Pro Max',
-      price: 40000000,
-      isNew: false,
-      image: 'https://via.placeholder.com/800x600',
-    },
-    {
-      id: '5',
-      name: 'iPad mini 6',
-      price: 15000000,
-      isNew: false,
-      image: 'https://via.placeholder.com/800x600',
-    },
-  ],
-  productDetail: {},
+  productList: {
+    data: [],
+    meta: {},
+    loading: false,
+    error: null,
+  },
+  productDetail: {
+    data: {},
+    loading: false,
+    error: null,
+  },
+  actionLoading: {
+    createProduct: false,
+    updateProduct: false,
+    deleteProduct: false,
+  },
 };
 
 const productReducer = createReducer(initialState, {
-  [PRODUCT_LIST.GET_PRODUCT_LIST]: (state, action) => {
+  [REQUEST(PRODUCT_ACTION.GET_PRODUCT_LIST)]: (state, action) => {
     return {
       ...state,
-      productList: action.payload,
+      productList: {
+        ...state.productList,
+        loading: true,
+      },
     };
   },
-  [PRODUCT_LIST.CREATE_PRODUCT]: (state, action) => {
-    const newProductList = [...state.productList];
+  [SUCCESS(PRODUCT_ACTION.GET_PRODUCT_LIST)]: (state, action) => {
+    const { data, meta } = action.payload;
     return {
       ...state,
-      productList: [action.payload, ...newProductList],
+      productList: {
+        ...state.productList,
+        data,
+        meta,
+        loading: false,
+        error: null,
+      },
     };
   },
-  [PRODUCT_LIST.DELETE_PRODUCT]: (state, action) => {
-    const newProductList = state.productList.filter(
-      product => product.id !== action.payload.id
-    );
+  [FAIL(PRODUCT_ACTION.GET_PRODUCT_LIST)]: (state, action) => {
+    const { error } = action.payload;
     return {
       ...state,
-      productList: newProductList,
+      productList: {
+        ...state.productList,
+        loading: false,
+        error,
+      },
     };
   },
-  [PRODUCT_LIST.GET_PRODUCT_DETAIL]: (state, action) => {
+
+  [REQUEST(PRODUCT_ACTION.GET_PRODUCT_DETAIL)]: (state, action) => {
     return {
       ...state,
-      productDetail: action.payload,
+      productDetail: {
+        ...state.productDetail,
+        data: {},
+        loading: true,
+      },
     };
   },
-  [PRODUCT_LIST.UPDATE_PRODUCT]: (state, action) => {
-    const productIndex = state.productList.findIndex(
-      product => product.id === action.payload.id
-    );
-    const newProductList = [...state.productList];
-    newProductList.splice(productIndex, 1, action.payload);
+  [SUCCESS(PRODUCT_ACTION.GET_PRODUCT_DETAIL)]: (state, action) => {
+    const { data } = action.payload;
     return {
       ...state,
-      productList: newProductList,
+      productDetail: {
+        ...state.productDetail,
+        data,
+        loading: false,
+        error: null,
+      },
+    };
+  },
+  [FAIL(PRODUCT_ACTION.GET_PRODUCT_DETAIL)]: (state, action) => {
+    const { error } = action.payload;
+    return {
+      ...state,
+      productDetail: {
+        ...state.productDetail,
+        loading: false,
+        error,
+      },
+    };
+  },
+
+  [REQUEST(PRODUCT_ACTION.CREATE_PRODUCT)]: (state, action) => {
+    return {
+      ...state,
+      actionLoading: {
+        ...state.actionLoading,
+        createProduct: true,
+      },
+    };
+  },
+  [SUCCESS(PRODUCT_ACTION.CREATE_PRODUCT)]: (state, action) => {
+    return {
+      ...state,
+      actionLoading: {
+        ...state.actionLoading,
+        createProduct: false,
+        error: null,
+      },
+    };
+  },
+  [FAIL(PRODUCT_ACTION.CREATE_PRODUCT)]: (state, action) => {
+    const { error } = action.payload;
+    return {
+      ...state,
+      actionLoading: {
+        ...state.actionLoading,
+        createProduct: false,
+        error,
+      },
+    };
+  },
+
+  [REQUEST(PRODUCT_ACTION.UPDATE_PRODUCT)]: (state, action) => {
+    return {
+      ...state,
+      actionLoading: {
+        ...state.actionLoading,
+        updateProduct: true,
+      },
+    };
+  },
+  [SUCCESS(PRODUCT_ACTION.UPDATE_PRODUCT)]: (state, action) => {
+    return {
+      ...state,
+      actionLoading: {
+        ...state.actionLoading,
+        updateProduct: false,
+      },
+    };
+  },
+  [FAIL(PRODUCT_ACTION.UPDATE_PRODUCT)]: (state, action) => {
+    return {
+      ...state,
+      actionLoading: {
+        ...state.actionLoading,
+        updateProduct: false,
+      },
+    };
+  },
+
+  [REQUEST(PRODUCT_ACTION.DELETE_PRODUCT)]: (state, action) => {
+    return {
+      ...state,
+      actionLoading: {
+        ...state.actionLoading,
+        deleteProduct: true,
+      },
+    };
+  },
+  [SUCCESS(PRODUCT_ACTION.DELETE_PRODUCT)]: (state, action) => {
+    return {
+      ...state,
+      actionLoading: {
+        ...state.actionLoading,
+        deleteProduct: false,
+      },
+    };
+  },
+  [FAIL(PRODUCT_ACTION.DELETE_PRODUCT)]: (state, action) => {
+    return {
+      ...state,
+      actionLoading: {
+        ...state.actionLoading,
+        deleteProduct: false,
+      },
+    };
+  },
+
+  [USER_ACTION.LOGOUT]: (state, action) => {
+    return {
+      ...state,
+      productList: {
+        data: [],
+        loading: false,
+        error: null,
+      },
     };
   },
 });

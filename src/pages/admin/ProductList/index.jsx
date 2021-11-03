@@ -13,11 +13,10 @@ import {
   Input,
   InputNumber,
   Checkbox,
+  Pagination,
 } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
-import { v4 as uuidv4 } from 'uuid';
 
-// import { PRODUCT_LIST } from '../../../api/product';
 import { ROUTER } from '../../../constants/router';
 
 import {
@@ -58,11 +57,9 @@ const AdminProductListPage = () => {
     }
   }, [isShowModifyProduct]);
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     dispatch(getProductListAction(PRODUCT_LIST));
-  //   }, 1000);
-  // }, []);
+  useEffect(() => {
+    dispatch(getProductListAction({ limit: 10, page: 1 }));
+  }, []);
 
   const handleDeleteProduct = id => {
     dispatch(deleteProductAction({ id }));
@@ -72,17 +69,26 @@ const AdminProductListPage = () => {
     if (isShowModifyProduct === 'update') {
       dispatch(
         updateProductAction({
-          ...values,
           id: initialUpdateValue.id,
-          image: 'https://via.placeholder.com/800x600',
+          data: {
+            ...values,
+            image: 'https://via.placeholder.com/800x600',
+          },
+          callback: {
+            goBackList: () => setIsShowModifyProduct(null),
+          },
         })
       );
     } else {
       dispatch(
         createProductAction({
-          ...values,
-          id: uuidv4(),
-          image: 'https://via.placeholder.com/800x600',
+          data: {
+            ...values,
+            image: 'https://via.placeholder.com/800x600',
+          },
+          callback: {
+            goBackList: () => setIsShowModifyProduct(null),
+          },
         })
       );
     }
@@ -110,7 +116,11 @@ const AdminProductListPage = () => {
       key: 'isNew',
       width: '8%',
       render: (_, record) => {
-        return <Space size={16}>{record.isNew ? <CheckOutlined /> : ''}</Space>;
+        return (
+          <Space size={16}>
+            {record.isNew ? <CheckOutlined style={{ color: 'red' }} /> : ''}
+          </Space>
+        );
       },
     },
     {
@@ -139,11 +149,11 @@ const AdminProductListPage = () => {
           <Button
             type="primary"
             ghost
-            onClick={() =>
+            onClick={() => {
               history.push(
                 generatePath(ROUTER.ADMIN.UPDATE_PRODUCT, { id: record.id })
-              )
-            }
+              );
+            }}
           >
             Sửa (Trang mới)
           </Button>
@@ -160,9 +170,10 @@ const AdminProductListPage = () => {
     },
   ];
 
-  const tableData = productList.map(item => ({
+  const tableData = productList.data.map(item => ({
     ...item,
     key: item.id,
+    id: item.id,
   }));
 
   return (
@@ -187,7 +198,21 @@ const AdminProductListPage = () => {
           </Button>
         </Space>
       </Row>
-      <Table size="small" columns={tableColumns} dataSource={tableData} />
+      {productList.error && <p>Error: {productList.error.message}</p>}
+
+      <Table
+        size="small"
+        columns={tableColumns}
+        dataSource={tableData}
+        loading={productList.loading}
+      />
+
+      <Pagination
+        current={productList.meta.page}
+        total={productList.meta.total}
+        onChange={page => dispatch(getProductListAction({ limit: 10, page }))}
+      />
+
       <Drawer
         title={
           isShowModifyProduct === 'update' ? 'Sửa sản phẩm' : 'Thêm sản phẩm'

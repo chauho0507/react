@@ -2,30 +2,22 @@ import React, { useEffect } from 'react';
 import { useHistory, generatePath } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { PRODUCT_LIST } from '../../../constants/product';
 import { ROUTER } from '../../../constants/router';
 import { getProductListAction } from '../../../redux/actions';
 
 const ProductListPage = () => {
+  useEffect(() => {
+    dispatch(getProductListAction({ limit: 10, page: 1 }));
+  }, []);
+
   const { productList } = useSelector(state => state.productReducer);
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (productList.length === 0) {
-      const timer = setTimeout(() => {
-        dispatch(getProductListAction(PRODUCT_LIST));
-      }, 500);
-      return () => {
-        clearTimeout(timer);
-      };
-    }
-  }, []);
-
   const history = useHistory();
 
   const renderProductList = () => {
-    return productList.map((item, index) => (
+    return productList.data.map(item => (
       <div
         key={item.id}
         className="card"

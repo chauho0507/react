@@ -1,35 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouteMatch, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form, Card, Input, Button, InputNumber, Checkbox } from 'antd';
-import { v4 as uuidv4 } from 'uuid';
 
 import { ROUTER } from '../../../constants/router';
 
 import {
+  getProductDetailAction,
   createProductAction,
   updateProductAction,
 } from '../../../redux/actions';
 
 const ModifyProductPage = () => {
+  const [modifyProductForm] = Form.useForm();
   const history = useHistory();
   const { params } = useRouteMatch();
-  console.log(params);
   const id = params?.id;
-  console.log(id);
 
-  const { productList } = useSelector(state => state.productReducer);
+  const { productDetail, actionLoading } = useSelector(
+    state => state.productReducer
+  );
   const dispatch = useDispatch();
-  console.log(productList);
-
-  const productData = productList.find(item => item.id === id);
-  console.log(productData);
 
   const initialValues = id
     ? {
-        name: productData?.name,
-        price: productData?.price,
-        isNew: productData?.isNew,
+        name: productDetail.data?.name,
+        price: productDetail.data?.price,
+        isNew: productDetail.data?.isNew,
       }
     : {
         name: '',
@@ -37,25 +34,37 @@ const ModifyProductPage = () => {
         isNew: false,
       };
 
+  useEffect(() => {
+    if (id) dispatch(getProductDetailAction({ id }));
+  }, [id]);
+  useEffect(() => {
+    modifyProductForm.resetFields();
+  }, [productDetail.data]);
+
   const handleSubmitForm = values => {
     if (id) {
       dispatch(
         updateProductAction({
-          ...values,
           id,
-          image: 'https://via.placeholder.com/800x600',
+          data: {
+            ...values,
+            image: 'https://via.placeholder.com/800x600',
+          },
+          callback: {
+            goBackList: () => history.push(ROUTER.ADMIN.PRODUCT_LIST),
+          },
         })
       );
     } else {
       dispatch(
         createProductAction({
-          ...values,
-          id: uuidv4(),
-          image: 'https://via.placeholder.com/800x600',
+          data: { ...values, image: 'https://via.placeholder.com/800x600' },
+          callback: {
+            goBackList: () => history.push(ROUTER.ADMIN.PRODUCT_LIST),
+          },
         })
       );
     }
-    history.push(ROUTER.ADMIN.PRODUCT_LIST);
   };
 
   return (
@@ -63,6 +72,7 @@ const ModifyProductPage = () => {
       <h3>{id ? 'Cập nhật sản phẩm' : 'Thêm sản phẩm'}</h3>
       <Card style={{ maxWidth: 700, width: '100%' }}>
         <Form
+          form={modifyProductForm}
           name={id ? 'update-product-form' : 'create-product-form'}
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 18 }}
@@ -103,7 +113,13 @@ const ModifyProductPage = () => {
             wrapperCol={{ offset: 6, span: 18 }}
             style={{ marginBottom: 0 }}
           >
-            <Button type="primary" htmlType="submit">
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={
+                actionLoading.createProduct || actionLoading.updateProduct
+              }
+            >
               {id ? 'Sửa' : 'Thêm'}
             </Button>
           </Form.Item>

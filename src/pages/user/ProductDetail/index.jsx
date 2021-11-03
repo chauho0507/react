@@ -1,17 +1,29 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getProductDetailAction } from '../../../redux/actions';
 
 const ProductDetailPage = ({ match, ...props }) => {
-  const { productList } = useSelector(state => state.productReducer);
   const id = match.params?.id;
-  const productData = productList.find(item => item.id === id);
-  console.log(productData);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (id) dispatch(getProductDetailAction({ id }));
+  }, [id]);
+
+  const { productDetail } = useSelector(state => state.productReducer);
+  const { loading } = productDetail;
+  const { name, price } = productDetail.data;
 
   return (
     <div>
       Product Detail Page
-      <div>{productData?.name}</div>
-      <div>{`${productData?.price.toLocaleString()} ₫`}</div>
+      {loading && <p>Loading...</p>}
+      {!loading && (
+        <>
+          <div>{name}</div>
+          <div>{`${price} ₫`}</div>
+        </>
+      )}
     </div>
   );
 };

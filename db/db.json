@@ -1,0 +1,112 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Tuấn Admin",
+      "email": "tuanadmin@gmail.com",
+      "password": "123123",
+      "roleId": "2"
+    },
+    {
+      "id": 2,
+      "name": "Tuấn",
+      "email": "tuan@gmail.com",
+      "password": "123123",
+      "roleId": "1"
+    },
+    {
+      "id": 3,
+      "name": "Châu",
+      "email": "chaumap@gmail.com",
+      "password": "123123",
+      "roleId": "2"
+    }
+  ],
+  "roles": [
+    {
+      "id": "1",
+      "name": "user"
+    },
+    {
+      "id": "2",
+      "name": "admin"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "iPhone 13",
+      "price": 28500000,
+      "isNew": false,
+      "image": "https://via.placeholder.com/800x600"
+    },
+    {
+      "id": 2,
+      "name": "iPhone 13 Mini",
+      "price": 25400000,
+      "isNew": false,
+      "image": "https://via.placeholder.com/800x600"
+    },
+    {
+      "id": 3,
+      "name": "iPhone 13 Pro",
+      "price": 35000000,
+      "isNew": true,
+      "image": "https://via.placeholder.com/800x600"
+    },
+    {
+      "id": 4,
+      "name": "iPhone 13 Pro Max",
+      "price": 40000000,
+      "isNew": false,
+      "image": "https://via.placeholder.com/800x600"
+    },
+    {
+      "id": 5,
+      "name": "iPad mini 6",
+      "price": 13000000,
+      "isNew": false,
+      "image": "https://via.placeholder.com/800x600"
+    },
+    {
+      "name": "Xiaomi M15",
+      "price": 15000000,
+      "isNew": true,
+      "image": "https://via.placeholder.com/800x600",
+      "id": 6
+    },
+    {
+      "name": "Xiaomi M12",
+      "price": 1200000,
+      "isNew": true,
+      "image": "https://via.placeholder.com/800x600",
+      "id": 7
+    }
+  ],
+  "categories": [
+    {
+      "id": "1",
+      "name": "Apple"
+    },
+    {
+      "id": "2",
+      "name": "Samsung"
+    },
+    {
+      "id": "3",
+      "name": "Xiaomi"
+    }
+  ],
+  "tasks": [
+    {
+      "title": "Task 01",
+      "description": "Use redux saga to upgrade ToDoList",
+      "id": 1
+    },
+    {
+      "title": "Task 02",
+      "description": "how to use json-server-auth",
+      "id": 2
+    }
+  ]
+}

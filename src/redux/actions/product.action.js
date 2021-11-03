@@ -1,10 +1,18 @@
 import { createAction } from '@reduxjs/toolkit';
-import { PRODUCT_LIST } from '../constants';
+import { PRODUCT_ACTION, REQUEST } from '../constants';
 
-export const getProductListAction = createAction(PRODUCT_LIST.GET_PRODUCT_LIST);
-export const createProductAction = createAction(PRODUCT_LIST.CREATE_PRODUCT);
-export const deleteProductAction = createAction(PRODUCT_LIST.DELETE_PRODUCT);
-export const updateProductAction = createAction(PRODUCT_LIST.UPDATE_PRODUCT);
+export const getProductListAction = createAction(
+  REQUEST(PRODUCT_ACTION.GET_PRODUCT_LIST)
+);
+export const createProductAction = createAction(
+  REQUEST(PRODUCT_ACTION.CREATE_PRODUCT)
+);
+export const deleteProductAction = createAction(
+  REQUEST(PRODUCT_ACTION.DELETE_PRODUCT)
+);
+export const updateProductAction = createAction(
+  REQUEST(PRODUCT_ACTION.UPDATE_PRODUCT)
+);
 export const getProductDetailAction = createAction(
-  PRODUCT_LIST.GET_PRODUCT_DETAIL
+  REQUEST(PRODUCT_ACTION.GET_PRODUCT_DETAIL)
 );
