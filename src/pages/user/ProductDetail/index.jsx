@@ -5,14 +5,13 @@ import { getProductDetailAction } from '../../../redux/actions';
 const ProductDetailPage = ({ match, ...props }) => {
   const id = match.params?.id;
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (id) dispatch(getProductDetailAction({ id }));
-  }, [id]);
-
   const { productDetail } = useSelector(state => state.productReducer);
   const { loading } = productDetail;
-  const { name, price } = productDetail.data;
+  useEffect(() => {
+    if (id) {
+      dispatch(getProductDetailAction({ id }));
+    }
+  }, [id]);
 
   return (
     <div>
@@ -20,8 +19,8 @@ const ProductDetailPage = ({ match, ...props }) => {
       {loading && <p>Loading...</p>}
       {!loading && (
         <>
-          <div>{name}</div>
-          <div>{`${price} ₫`}</div>
+          <div>{productDetail.data.name}</div>
+          <div>{`${productDetail.data.price?.toLocaleString()} ₫`}</div>
         </>
       )}
     </div>

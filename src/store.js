@@ -5,7 +5,8 @@ import {
   commonReducer,
   productReducer,
   toDoListReducer,
-  userReducer,
+  authReducer,
+  categoryReducer,
 } from './redux/reducers/';
 
 import rootSaga from './redux/sagas';
@@ -13,7 +14,13 @@ import rootSaga from './redux/sagas';
 const sagaMiddleware = createSagaMiddleware();
 
 export const store = configureStore({
-  reducer: { commonReducer, productReducer, toDoListReducer, userReducer },
+  reducer: {
+    commonReducer,
+    productReducer,
+    toDoListReducer,
+    authReducer,
+    categoryReducer,
+  },
   middleware: getDefaultMiddleware => [
     ...getDefaultMiddleware({ thunk: false, serializableCheck: false }),
     sagaMiddleware,

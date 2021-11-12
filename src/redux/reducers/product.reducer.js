@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import {
-  USER_ACTION,
+  AUTH_ACTION,
   PRODUCT_ACTION,
   REQUEST,
   SUCCESS,
@@ -37,7 +37,19 @@ const productReducer = createReducer(initialState, {
     };
   },
   [SUCCESS(PRODUCT_ACTION.GET_PRODUCT_LIST)]: (state, action) => {
-    const { data, meta } = action.payload;
+    const { data, meta, more } = action.payload;
+    if (more) {
+      return {
+        ...state,
+        productList: {
+          ...state.productList,
+          data: [...state.productList.data, ...data],
+          meta,
+          loading: false,
+          error: null,
+        },
+      };
+    }
     return {
       ...state,
       productList: {
@@ -48,6 +60,7 @@ const productReducer = createReducer(initialState, {
         error: null,
       },
     };
+
   },
   [FAIL(PRODUCT_ACTION.GET_PRODUCT_LIST)]: (state, action) => {
     const { error } = action.payload;
@@ -182,7 +195,7 @@ const productReducer = createReducer(initialState, {
     };
   },
 
-  [USER_ACTION.LOGOUT]: (state, action) => {
+  [AUTH_ACTION.LOGOUT]: (state, action) => {
     return {
       ...state,
       productList: {

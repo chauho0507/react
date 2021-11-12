@@ -1,86 +1,168 @@
 {
   "users": [
     {
-      "id": 1,
-      "name": "Tuấn Admin",
-      "email": "tuanadmin@gmail.com",
-      "password": "123123",
-      "roleId": "2"
-    },
-    {
-      "id": 2,
-      "name": "Tuấn",
-      "email": "tuan@gmail.com",
-      "password": "123123",
-      "roleId": "1"
-    },
-    {
-      "id": 3,
-      "name": "Châu",
       "email": "chaumap@gmail.com",
-      "password": "123123",
-      "roleId": "2"
-    }
-  ],
-  "roles": [
-    {
-      "id": "1",
-      "name": "user"
+      "password": "$2a$10$EGjSuEOzZG3iR3yeKjfwUeOdqMhEY8jq85bcxtBYG4hHQ/Q.6o.zG",
+      "name": "Châu Mập",
+      "gender": "male",
+      "role": "admin",
+      "createdAt": 1636342672993,
+      "updatedAt": 1636342672993,
+      "id": 1
     },
     {
-      "id": "2",
-      "name": "admin"
+      "email": "chaumap1@gmail.com",
+      "password": "$2a$10$lsRO37OdulmMSkuI78S94OpbhriO3.ICrxmTUwiOUveMRYT7Nj2Ta",
+      "name": "Châu123",
+      "gender": "male",
+      "role": "user",
+      "createdAt": 1636347444653,
+      "updatedAt": 1636347444653,
+      "id": 2
+    },
+    {
+      "email": "chaumap2@gmail.com",
+      "password": "$2a$10$7JGDkFc1QcMPhfEvDxcN9OpBajfMIDZqWJfb0yTvtHoEI1gFvMl2y",
+      "name": "Châu123",
+      "gender": "female",
+      "role": "user",
+      "createdAt": 1636347645908,
+      "updatedAt": 1636347645908,
+      "id": 3
+    },
+    {
+      "email": "chaumapuser1@gmail.com",
+      "password": "$2a$10$XG4UsSVcwSAHFyTbJ/komuE68hG3ZfSU1qvxMaIjuD/GmuUyWkaA.",
+      "name": "Galaxy",
+      "gender": "male",
+      "role": "user",
+      "createdAt": 1636347771748,
+      "updatedAt": 1636347771748,
+      "id": 4
+    },
+    {
+      "email": "chaumapuser@gmail.com",
+      "password": "$2a$10$/GoacLwa0hIQov9puwh9JejO/ESp7ToIo6tGOB99ozRVW2.aMLU2G",
+      "name": "Châu123",
+      "gender": "male",
+      "role": "user",
+      "createdAt": 1636380754908,
+      "updatedAt": 1636380754908,
+      "id": 5
     }
   ],
   "products": [
     {
-      "id": 1,
+      "id": "1",
       "name": "iPhone 13",
       "price": 28500000,
       "isNew": false,
-      "image": "https://via.placeholder.com/800x600"
+      "image": "https://via.placeholder.com/800x600",
+      "categoryId": "1"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "iPhone 13 Mini",
       "price": 25400000,
       "isNew": false,
-      "image": "https://via.placeholder.com/800x600"
+      "image": "https://via.placeholder.com/800x600",
+      "categoryId": "1"
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "iPhone 13 Pro",
       "price": 35000000,
       "isNew": true,
-      "image": "https://via.placeholder.com/800x600"
+      "image": "https://via.placeholder.com/800x600",
+      "categoryId": "1"
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "iPhone 13 Pro Max",
       "price": 40000000,
-      "isNew": false,
-      "image": "https://via.placeholder.com/800x600"
+      "isNew": true,
+      "image": "https://via.placeholder.com/800x600",
+      "categoryId": "1"
     },
     {
-      "id": 5,
+      "id": "5",
       "name": "iPad mini 6",
       "price": 13000000,
       "isNew": false,
-      "image": "https://via.placeholder.com/800x600"
+      "image": "https://via.placeholder.com/800x600",
+      "categoryId": "1"
     },
     {
       "name": "Xiaomi M15",
       "price": 15000000,
       "isNew": true,
       "image": "https://via.placeholder.com/800x600",
-      "id": 6
+      "id": "6",
+      "categoryId": "3"
     },
     {
       "name": "Xiaomi M12",
       "price": 1200000,
+      "isNew": false,
+      "image": "https://via.placeholder.com/800x600",
+      "id": "7",
+      "categoryId": "3"
+    },
+    {
+      "name": "Samsung Galaxy 20",
+      "categoryId": "2",
+      "price": 20000000,
+      "isNew": false,
+      "image": "https://via.placeholder.com/800x600",
+      "id": "4qPJo5Z"
+    },
+    {
+      "name": "iPhone 12 Pro max",
+      "categoryId": "1",
+      "price": 22000000,
       "isNew": true,
       "image": "https://via.placeholder.com/800x600",
-      "id": 7
+      "id": "eehQfno"
+    },
+    {
+      "name": "Samsung Galaxy 21",
+      "categoryId": "2",
+      "price": 23500000,
+      "isNew": true,
+      "image": "https://via.placeholder.com/800x600",
+      "id": "ARW1WQL"
+    },
+    {
+      "name": "iPhone 7",
+      "categoryId": "1",
+      "price": 6500000,
+      "isNew": false,
+      "image": "https://via.placeholder.com/800x600",
+      "id": "_UNesM4"
+    },
+    {
+      "name": "Samsung Galaxy s8",
+      "categoryId": "2",
+      "price": 12000000,
+      "isNew": true,
+      "image": "https://via.placeholder.com/800x600",
+      "id": "ML44Yv4"
+    },
+    {
+      "name": "iPad Pro",
+      "categoryId": "1",
+      "price": 3200000,
+      "isNew": false,
+      "image": "https://via.placeholder.com/800x600",
+      "id": "W7ubM31"
+    },
+    {
+      "name": "iWatch s2",
+      "categoryId": "1",
+      "price": 1500000,
+      "isNew": false,
+      "image": "https://via.placeholder.com/800x600",
+      "id": "Csk4zmy"
     }
   ],
   "categories": [
@@ -101,12 +183,12 @@
     {
       "title": "Task 01",
       "description": "Use redux saga to upgrade ToDoList",
-      "id": 1
+      "id": "1"
     },
     {
       "title": "Task 02",
       "description": "how to use json-server-auth",
-      "id": 2
+      "id": "2"
     }
   ]
 }

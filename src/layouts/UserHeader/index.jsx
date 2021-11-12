@@ -1,8 +1,12 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Button, Select, Space, Dropdown, Menu } from 'antd';
-import { MenuUnfoldOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Select, Space, Dropdown, Menu, Switch } from 'antd';
+import {
+  MenuUnfoldOutlined,
+  UserOutlined,
+  LoadingOutlined,
+} from '@ant-design/icons';
 
 import {
   setThemeAction,
@@ -15,9 +19,8 @@ import * as S from './styles';
 
 function Header() {
   const history = useHistory();
-  const { theme } = useSelector(state => state.commonReducer);
-  const { userInfo } = useSelector(state => state.userReducer);
-
+  // const { theme } = useSelector(state => state.commonReducer);
+  const { userInfo } = useSelector(state => state.authReducer);
   const dispatch = useDispatch();
 
   const logoutHandler = () => {
@@ -33,19 +36,29 @@ function Header() {
         onClick={() => dispatch(toggleSidebarAction())}
       />
       <Space size={32}>
-        <Select
+        <Switch
+          checkedChildren="Light"
+          unCheckedChildren="Dark"
+          onChange={e => {
+            if (e) dispatch(setThemeAction('light'));
+            else dispatch(setThemeAction('dark'));
+          }}
+        />
+        {/* <Select
           value={theme}
           onChange={value => dispatch(setThemeAction(value))}
           style={{ width: 100 }}
         >
           <Select.Option value="light">Light</Select.Option>
           <Select.Option value="dark">Dark</Select.Option>
-        </Select>
-        {userInfo.name ? (
+        </Select> */}
+        {userInfo.loading ? (
+          <LoadingOutlined spin />
+        ) : userInfo.data.name ? (
           <Dropdown
             overlay={
               <Menu style={{ cursor: 'pointer' }}>
-                {userInfo.role === 'admin' && (
+                {userInfo.data.role === 'admin' && (
                   <Menu.Item
                     key="0"
                     onClick={() => history.push(ROUTER.ADMIN.DASHBOARD)}
@@ -63,7 +76,7 @@ function Header() {
           >
             <Space>
               <UserOutlined style={{ color: 'white' }} />
-              <div style={{ color: 'white' }}>{userInfo.name}</div>
+              <div style={{ color: 'white' }}>{userInfo.data.name}</div>
             </Space>
           </Dropdown>
         ) : (

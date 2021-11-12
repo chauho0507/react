@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useRouteMatch, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Form, Card, Input, Button, InputNumber, Checkbox } from 'antd';
+import { Form, Card, Input, Button, InputNumber, Checkbox, Select } from 'antd';
 
 import { ROUTER } from '../../../constants/router';
 
 import {
   getProductDetailAction,
+  getCategoryListAction,
   createProductAction,
   updateProductAction,
 } from '../../../redux/actions';
@@ -20,6 +21,7 @@ const ModifyProductPage = () => {
   const { productDetail, actionLoading } = useSelector(
     state => state.productReducer
   );
+  const { categoryList } = useSelector(state => state.categoryReducer);
   const dispatch = useDispatch();
 
   const initialValues = id
@@ -36,10 +38,21 @@ const ModifyProductPage = () => {
 
   useEffect(() => {
     if (id) dispatch(getProductDetailAction({ id }));
+    dispatch(getCategoryListAction());
   }, [id]);
   useEffect(() => {
     modifyProductForm.resetFields();
   }, [productDetail.data]);
+
+  const renderCategoryOptions = useMemo(() => {
+    return categoryList.data?.map(category => {
+      return (
+        <Select.Option key={category.id} value={category.id}>
+          {category.name}
+        </Select.Option>
+      );
+    });
+  }, [categoryList.data]);
 
   const handleSubmitForm = values => {
     if (id) {
@@ -85,6 +98,14 @@ const ModifyProductPage = () => {
             rules={[{ required: true, message: 'Bạn chưa nhập tên' }]}
           >
             <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Nhà sản xuất"
+            name="categoryId"
+            rules={[{ required: true, message: 'Bạn chưa chọn nhà sản xuất' }]}
+          >
+            <Select placeholder="Nhà sản xuất">{renderCategoryOptions}</Select>
           </Form.Item>
 
           <Form.Item

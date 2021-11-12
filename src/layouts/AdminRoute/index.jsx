@@ -12,11 +12,14 @@ import * as S from './styles';
 
 const AdminRoute = ({ component: Component, ...props }) => {
   const { isShowSidebar } = useSelector(state => state.commonReducer);
+  console.log('loading');
 
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+  // const userInfo = useSelector(state => state.authReducer);
+
   if (!userInfo) {
     return <Redirect to={ROUTER.LOGIN} />;
-  } else if (userInfo.role === 'user') {
+  } else if (userInfo.role !== 'admin') {
     return <Redirect to={ROUTER.USER.HOME} />;
   }
   return (

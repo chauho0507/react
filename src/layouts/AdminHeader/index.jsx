@@ -1,8 +1,12 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { Select, Button, Space, Dropdown, Menu } from 'antd';
-import { MenuUnfoldOutlined, UserOutlined } from '@ant-design/icons';
+import { Select, Button, Space, Dropdown, Menu, Switch } from 'antd';
+import {
+  MenuUnfoldOutlined,
+  UserOutlined,
+  LoadingOutlined,
+} from '@ant-design/icons';
 import {
   setThemeAction,
   toggleSidebarAction,
@@ -12,12 +16,13 @@ import { ROUTER } from '../../constants/router';
 
 import * as S from './styles';
 
-function Header() {
+function AdminHeader() {
   const history = useHistory();
   const { theme } = useSelector(state => state.commonReducer);
-  const { userInfo } = useSelector(state => state.userReducer);
-
   const dispatch = useDispatch();
+
+  const { userInfo } = useSelector(state => state.authReducer);
+
   const logoutHandler = () => {
     localStorage.removeItem('userInfo');
     dispatch(logoutAction());
@@ -32,15 +37,25 @@ function Header() {
         onClick={() => dispatch(toggleSidebarAction())}
       ></Button>
       <Space size={32}>
-        <Select
+        <Switch
+          checkedChildren="Light"
+          unCheckedChildren="Dark"
+          onChange={e => {
+            if (e) dispatch(setThemeAction('light'));
+            else dispatch(setThemeAction('dark'));
+          }}
+        />
+        {/* <Select
           value={theme}
           onChange={value => dispatch(setThemeAction(value))}
           style={{ width: 100 }}
         >
           <Select.Option value="light">Light</Select.Option>
           <Select.Option value="dark">Dark</Select.Option>
-        </Select>
-        {userInfo.name ? (
+        </Select> */}
+        {userInfo.loading ? (
+          <LoadingOutlined spin />
+        ) : userInfo.data.name ? (
           <Dropdown
             overlay={
               <Menu>
@@ -59,7 +74,7 @@ function Header() {
                   color: 'white',
                 }}
               >
-                {userInfo.name}
+                {userInfo.data.name}
               </div>
             </Space>
           </Dropdown>
@@ -71,4 +86,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default AdminHeader;

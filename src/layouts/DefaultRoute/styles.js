@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 export const MainContainer = styled.div`
   position: relative;
   min-height: calc(100vh - 120px);
+  background-color: ${({ theme }) => theme.body};
 `;
 
 export const MainContent = styled.div`

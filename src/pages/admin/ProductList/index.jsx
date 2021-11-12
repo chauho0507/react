@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useHistory, generatePath } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -14,13 +14,17 @@ import {
   InputNumber,
   Checkbox,
   Pagination,
+  Select,
 } from 'antd';
-import { CheckOutlined } from '@ant-design/icons';
+import { CheckOutlined, SearchOutlined } from '@ant-design/icons';
 
 import { ROUTER } from '../../../constants/router';
+import { PAGE_SIZE } from '../../../constants/pagination';
+import classes from './productList.module.css';
 
 import {
   getProductListAction,
+  getCategoryListAction,
   createProductAction,
   updateProductAction,
   deleteProductAction,
@@ -32,18 +36,31 @@ const AdminProductListPage = () => {
   // 'update': open with update form
   const [isShowModifyProduct, setIsShowModifyProduct] = useState(null);
   const [initialUpdateValue, setInitialUpdateValue] = useState({});
+  const [productKeyword, setProductKeyword] = useState('');
 
   const [modifyProductForm] = Form.useForm();
   const history = useHistory();
 
   const { productList } = useSelector(state => state.productReducer);
+  const { categoryList } = useSelector(state => state.categoryReducer);
   const dispatch = useDispatch();
+
+  const renderCategoryOptions = useMemo(() => {
+    return categoryList.data?.map(category => {
+      return (
+        <Select.Option key={category.id} value={category.id}>
+          {category.name}
+        </Select.Option>
+      );
+    });
+  }, [categoryList.data]);
 
   const initialValues = initialUpdateValue.id
     ? {
         name: initialUpdateValue?.name,
         price: initialUpdateValue?.price,
         isNew: initialUpdateValue?.isNew,
+        categoryId: initialUpdateValue?.categoryId,
       }
     : {
         name: '',
@@ -58,14 +75,41 @@ const AdminProductListPage = () => {
   }, [isShowModifyProduct]);
 
   useEffect(() => {
-    dispatch(getProductListAction({ limit: 10, page: 1 }));
+    dispatch(getProductListAction({ limit: PAGE_SIZE.ADMIN_PRODUCT, page: 1 }));
+    dispatch(getCategoryListAction({}));
   }, []);
+
+  // const searchProductHandler = value => {
+  //   dispatch(
+  //     getProductListAction({
+  //       limit: PAGE_SIZE.ADMIN_PRODUCT,
+  //       page: 1,
+  //       keyword: value,
+  //     })
+  //   );
+  // };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      dispatch(
+        getProductListAction({
+          limit: PAGE_SIZE.ADMIN_PRODUCT,
+          page: 1,
+          keyword: productKeyword,
+        })
+      );
+    }, 400);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [productKeyword]);
 
   const handleDeleteProduct = id => {
     dispatch(deleteProductAction({ id }));
   };
 
   const handleSubmitForm = values => {
+    console.log(values);
     if (isShowModifyProduct === 'update') {
       dispatch(
         updateProductAction({
@@ -111,6 +155,15 @@ const AdminProductListPage = () => {
       },
     },
     {
+      title: 'Nhà sản xuất',
+      dataIndex: 'categoryId',
+      key: 'categoryId',
+      width: '10%',
+      render: (_, record) => {
+        return <Space size={16}>{record.category?.name}</Space>;
+      },
+    },
+    {
       title: 'New',
       dataIndex: 'isNew',
       key: 'isNew',
@@ -131,7 +184,7 @@ const AdminProductListPage = () => {
       render: item => `${item.toLocaleString()} ₫`,
     },
     {
-      title: 'Action',
+      title: '',
       key: 'action',
       width: '25%',
       render: (_, record) => (
@@ -140,6 +193,7 @@ const AdminProductListPage = () => {
             type="primary"
             ghost
             onClick={() => {
+              console.log(record);
               setIsShowModifyProduct('update');
               setInitialUpdateValue(record);
             }}
@@ -182,7 +236,6 @@ const AdminProductListPage = () => {
         <h3 style={{ marginBottom: 0 }}>Quản lý sản phẩm</h3>
         <Space>
           <Button
-            type="primary"
             onClick={() => {
               setIsShowModifyProduct('create');
               setInitialUpdateValue({});
@@ -190,16 +243,21 @@ const AdminProductListPage = () => {
           >
             Thêm sản phẩm (Modal)
           </Button>
-          <Button
-            type="primary"
-            onClick={() => history.push(ROUTER.ADMIN.CREATE_PRODUCT)}
-          >
+          <Button onClick={() => history.push(ROUTER.ADMIN.CREATE_PRODUCT)}>
             Thêm sản phẩm (Trang mới)
           </Button>
         </Space>
       </Row>
       {productList.error && <p>Error: {productList.error.message}</p>}
-
+      <Row style={{ width: '60%', margin: '0 auto', paddingBottom: 16 }}>
+        <Input
+          className={classes.searchInput}
+          prefix={<SearchOutlined />}
+          placeholder="Search"
+          onChange={e => setProductKeyword(e.target.value)}
+          // onChange={e => searchProductHandler(e.target.value)}
+        />
+      </Row>
       <Table
         size="small"
         columns={tableColumns}
@@ -240,6 +298,14 @@ const AdminProductListPage = () => {
             rules={[{ required: true, message: 'Bạn chưa nhập tên' }]}
           >
             <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Nhà sản xuất"
+            name="categoryId"
+            rules={[{ required: true, message: 'Bạn chưa chọn nhà sản xuất' }]}
+          >
+            <Select placeholder="Nhà sản xuất">{renderCategoryOptions}</Select>
           </Form.Item>
 
           <Form.Item

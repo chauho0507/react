@@ -48,9 +48,10 @@
 .card {
   position: relative;
   margin: 8px;
-  width: calc(20% - 16px);
+  width: 100%;
   border-radius: 4px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  background-color: #88e0dd;
   cursor: pointer;
 }
 

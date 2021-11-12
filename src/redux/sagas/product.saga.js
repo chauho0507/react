@@ -5,11 +5,14 @@ import { PRODUCT_ACTION, REQUEST, SUCCESS, FAIL } from '../constants';
 
 function* getProductListSaga(action) {
   try {
-    const { limit, page } = action.payload;
+    const { limit, page, categoryId, keyword, more } = action.payload;
     const result = yield axios.get('http://localhost:4000/products', {
       params: {
         _limit: limit,
         _page: page,
+        _expand: 'category',
+        ...(categoryId && { categoryId }),
+        ...(keyword && { q: keyword }),
       },
     });
     yield put({
@@ -20,6 +23,7 @@ function* getProductListSaga(action) {
           page,
           total: parseInt(result.headers['x-total-count']),
         },
+        more,
       },
     });
   } catch (error) {

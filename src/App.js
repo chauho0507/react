@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import './App.css';
 import 'antd/dist/antd.css';
+import jwtDecode from 'jwt-decode';
 
 import DefaultRoute from './layouts/DefaultRoute';
 import AdminRoute from './layouts/AdminRoute';
@@ -21,8 +22,7 @@ import ModifyProductPage from './pages/admin/ModifyProduct';
 import LoginAndRegisterAntDPage from './pages/LoginAndRegisterAntD';
 import NotFoundPage from './pages/NotFound';
 
-import { getUserInfoAction, getUserListAction } from './redux/actions';
-import { USER_LIST } from './api/user';
+import { getUserInfoAction, setThemeAction } from './redux/actions';
 
 import { ROUTER } from './constants/router';
 import { darkTheme, lightTheme } from './themes';
@@ -30,11 +30,18 @@ import { darkTheme, lightTheme } from './themes';
 const App = () => {
   const { theme } = useSelector(state => state.commonReducer);
   const dispatch = useDispatch();
-
   useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem('userInfo')) || {};
-    dispatch(getUserInfoAction(userInfo));
-    dispatch(getUserListAction(USER_LIST));
+    const hours = new Date().getHours();
+    if (hours < 6 || hours > 18) {
+      dispatch(setThemeAction('dark'));
+    }
+  }, []);
+  useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    if (userInfo) {
+      const decodedUserData = jwtDecode(userInfo.accessToken);
+      dispatch(getUserInfoAction({ id: decodedUserData.sub }));
+    }
   }, []);
 
   return (
@@ -82,6 +89,7 @@ const App = () => {
             path={ROUTER.LOGIN}
             component={LoginAndRegisterAntDPage}
           />
+
           <Route path={ROUTER.NOT_FOUND} component={NotFoundPage} />
           <Route component={NotFoundPage} />
         </Switch>

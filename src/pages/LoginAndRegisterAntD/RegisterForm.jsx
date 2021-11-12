@@ -1,29 +1,52 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Form, Input, Radio, Select } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
-import { addUserAction } from '../../redux/actions';
+import { registerAction } from '../../redux/actions';
 
 const RegisterFormPage = ({ setIsLogin }) => {
   const [registerForm] = Form.useForm();
   const { Option } = Select;
 
-  const { userList } = useSelector(state => state.userReducer);
+  const { responseAction } = useSelector(state => state.authReducer);
   const dispatch = useDispatch();
 
-  const submitHandler = values => {
-    const emailIndex = userList.findIndex(user => user.email === values.email);
-
-    if (emailIndex !== -1) {
+  useEffect(() => {
+    if (responseAction.register.error) {
       registerForm.setFields([
         {
           name: 'email',
-          errors: ['Email đã tồn tại.'],
+          errors: [responseAction.register.error],
         },
       ]);
-    } else {
-      dispatch(addUserAction(values));
-      setIsLogin(true);
     }
+  }, [responseAction.register.error, responseAction.register.loading]);
+
+  const submitHandler = ({ name, email, password, gender, role }) => {
+    dispatch(
+      registerAction({
+        data: {
+          name,
+          email,
+          password,
+          gender,
+          role,
+        },
+        callback: { goBackLogin: () => setIsLogin(true) },
+      })
+    );
+
+    // const emailIndex = userList.findIndex(user => user.email === values.email);
+    // if (emailIndex !== -1) {
+    //   registerForm.setFields([
+    //     {
+    //       name: 'email',
+    //       errors: ['Email đã tồn tại.'],
+    //     },
+    //   ]);
+    // } else {
+    //   dispatch(registerAction(values));
+    //   setIsLogin(true);
+    // }
   };
 
   const resetFormHandler = () => {
@@ -146,7 +169,11 @@ const RegisterFormPage = ({ setIsLogin }) => {
           span: 18,
         }}
       >
-        <Button type="primary" htmlType="submit">
+        <Button
+          type="primary"
+          htmlType="submit"
+          loading={responseAction.register.loading}
+        >
           Register
         </Button>
         <Button
