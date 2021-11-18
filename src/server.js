@@ -5,11 +5,11 @@ const moment = require('moment');
 const server = jsonServer.create();
 const router = jsonServer.router('./db/db.json');
 
-const middlewares = jsonServer.defaults();
+const middleware = jsonServer.defaults();
 
 server.db = router.db;
 
-server.use(middlewares);
+server.use(middleware);
 server.use(jsonServer.bodyParser);
 
 server.use((req, res, next) => {
@@ -26,8 +26,8 @@ server.use((req, res, next) => {
     req.body.updatedAt = moment().valueOf();
   }
 
-  next()
-})
+  next();
+});
 
 server.use(auth);
 server.use(router);
