@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { getProductDetailAction } from '../../../redux/actions';
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getProductDetailAction } from "../../../redux/actions";
 
 const ProductDetailPage = ({ match, ...props }) => {
   const id = match.params?.id;
   const dispatch = useDispatch();
-  const { productDetail } = useSelector(state => state.productReducer);
+  const { productDetail } = useSelector((state) => state.productReducer);
   const { loading } = productDetail;
   useEffect(() => {
     if (id) {
@@ -15,7 +15,7 @@ const ProductDetailPage = ({ match, ...props }) => {
 
   return (
     <div>
-      Product Detail Page
+      Product Detail Ahihi Page
       {loading && <p>Loading...</p>}
       {!loading && (
         <>
