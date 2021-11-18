@@ -8,7 +8,7 @@ const initialState = {
     error: null,
   },
   userInfo: {
-    data: [],
+    data: {},
     loading: false,
     error: null,
   },

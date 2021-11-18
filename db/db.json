@@ -11,36 +11,6 @@
       "id": 1
     },
     {
-      "email": "chaumap1@gmail.com",
-      "password": "$2a$10$lsRO37OdulmMSkuI78S94OpbhriO3.ICrxmTUwiOUveMRYT7Nj2Ta",
-      "name": "Châu123",
-      "gender": "male",
-      "role": "user",
-      "createdAt": 1636347444653,
-      "updatedAt": 1636347444653,
-      "id": 2
-    },
-    {
-      "email": "chaumap2@gmail.com",
-      "password": "$2a$10$7JGDkFc1QcMPhfEvDxcN9OpBajfMIDZqWJfb0yTvtHoEI1gFvMl2y",
-      "name": "Châu123",
-      "gender": "female",
-      "role": "user",
-      "createdAt": 1636347645908,
-      "updatedAt": 1636347645908,
-      "id": 3
-    },
-    {
-      "email": "chaumapuser1@gmail.com",
-      "password": "$2a$10$XG4UsSVcwSAHFyTbJ/komuE68hG3ZfSU1qvxMaIjuD/GmuUyWkaA.",
-      "name": "Galaxy",
-      "gender": "male",
-      "role": "user",
-      "createdAt": 1636347771748,
-      "updatedAt": 1636347771748,
-      "id": 4
-    },
-    {
       "email": "chaumapuser@gmail.com",
       "password": "$2a$10$/GoacLwa0hIQov9puwh9JejO/ESp7ToIo6tGOB99ozRVW2.aMLU2G",
       "name": "Châu123",
@@ -48,7 +18,7 @@
       "role": "user",
       "createdAt": 1636380754908,
       "updatedAt": 1636380754908,
-      "id": 5
+      "id": 2
     }
   ],
   "products": [
